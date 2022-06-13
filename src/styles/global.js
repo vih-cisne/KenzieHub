@@ -11,6 +11,10 @@ export default createGlobalStyle`
     a {
         text-decoration: none;
     }
+
+    #root {
+        width: 100%;
+    }
     
     :root {
         --color-primary:#FF577F;
@@ -22,6 +26,9 @@ export default createGlobalStyle`
         --grey-2: #343B41;
         --grey-1: #868E96;
         --grey-0: #F8F9FA;
+
+        --text-white: #fff;
+
 
         --success: #3FE864;
         --error: #E83F5B;
@@ -35,6 +42,9 @@ export default createGlobalStyle`
         color: var(--grey-0);
         font-size: 1rem;
         font-family: 'Inter', sans-serif;
+        min-height: 100vh;
+        display: flex;
+        text-align: center;
     }
 
     span {
@@ -44,6 +54,10 @@ export default createGlobalStyle`
     h1, h3 {
         font-weight: 700;
     }
+    p {
+        color: var(--grey-1);
+        font-size: 0.8rem;
+    }
 
     button {
         cursor: pointer;
@@ -51,5 +65,6 @@ export default createGlobalStyle`
 
     h2 {
         font-weight: 600;
+        font-size: 1.1rem;
     }
 `;
