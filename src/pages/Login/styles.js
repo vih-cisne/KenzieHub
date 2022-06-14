@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { keyframes } from "styled-components";
 
 
-export const PageRegister = styled.div`
+export const PageLogin = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -42,10 +42,10 @@ export const AnimatedContainer = styled.div`
 
 `;
 
-export const HeaderRegister = styled.div`
+export const HeaderLogin = styled.div`
   display: flex;
   width: 370px;
-  justify-content: space-between;
+  justify-content: center;
   gap: 20px;
 
   margin: 2rem 0;

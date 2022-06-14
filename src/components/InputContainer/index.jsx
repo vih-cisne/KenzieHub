@@ -1,13 +1,21 @@
 import { InputDirection } from "./styles"
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useState } from "react";
 
 
-export function InputContainer ({children, label,...rest}) {
+export function InputContainer ({children, label, register, name, delay, type, error, ...rest}) {
+
+    const [visibilityPassword, setVisibilityPassword] = useState(false)
     
     return (
-        <InputDirection>
-            <label>{label}</label>
+        <InputDirection delay={delay} isError={!!error}>
+            <label>{label} {!!error && <span>- {error}</span>}</label>
             {children ? children :
-            <input {...rest}/>
+            <div>
+            <input {...register(name)} type={type === 'password' ? visibilityPassword ? 'text' : 'password' : null } {...rest}/>
+            {type ==='password' ? visibilityPassword ? <FaEyeSlash onClick={() => setVisibilityPassword(false)} />   : <FaEye onClick={() => setVisibilityPassword(true)}/>  : null }
+            
+            </div>
             
         }
         </InputDirection>
