@@ -40,6 +40,18 @@ export const AnimatedContainer = styled.div`
 
   }
 
+  @media (max-width:500px) {
+    form {
+      width: 80vw;
+
+      input {
+        
+        font-size: small;
+        
+      }
+    }
+  }
+
 `;
 
 export const HeaderLogin = styled.header`

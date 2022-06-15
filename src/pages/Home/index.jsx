@@ -36,7 +36,7 @@ function Home({ authenticated, setAuthenticated }) {
   
   const onSubmitRegisterTechFunction = (data) => {
 
-    console.log(data)
+
     axios.post('https://kenziehub.herokuapp.com/users/techs', data, {
       headers: {
         Authorization: `Bearer ${token}`
@@ -61,7 +61,7 @@ function Home({ authenticated, setAuthenticated }) {
     })
   }
   
-  const [onSubmitFunction, setOnSubmitFunction] = useState({f: (data) => console.log('teste')})
+  const [onSubmitFunction, setOnSubmitFunction] = useState({f: {}})
   function deleteFunction(id) {
     axios.delete(`https://kenziehub.herokuapp.com/users/techs/${id}`, {
       headers: {
