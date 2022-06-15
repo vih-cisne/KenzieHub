@@ -67,4 +67,22 @@ export default createGlobalStyle`
         font-weight: 600;
         font-size: 1.1rem;
     }
+
+    li {
+        list-style: none;
+    }
+
+    @media (max-width:500px) {
+        h2 {
+        font-size: 0.8rem;
+        }
+
+        h1 {
+            font-size: 1.2rem;
+        }
+
+        h3 {
+            font-size: 0.9rem;
+        }
+    }
 `;

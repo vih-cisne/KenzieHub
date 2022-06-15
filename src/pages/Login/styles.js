@@ -42,7 +42,7 @@ export const AnimatedContainer = styled.div`
 
 `;
 
-export const HeaderLogin = styled.div`
+export const HeaderLogin = styled.header`
   display: flex;
   width: 370px;
   justify-content: center;

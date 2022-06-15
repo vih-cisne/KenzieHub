@@ -9,10 +9,11 @@ export function InputContainer ({children, label, register, name, delay, type, e
     
     return (
         <InputDirection delay={delay} isError={!!error}>
-            <label>{label} {!!error && <span>- {error}</span>}</label>
+            <label>{label} {!!error && <span> - {error}</span>}</label>
             {children ? children :
             <div>
-            <input {...register(name)} type={type === 'password' ? visibilityPassword ? 'text' : 'password' : null } {...rest}/>
+            {register ?  <input {...register(name)} type={type === 'password' ? visibilityPassword ? 'text' : 'password' : null } {...rest}/> :  <input readOnly type={type === 'password' ? visibilityPassword ? 'text' : 'password' : null } {...rest}/>  } 
+            
             {type ==='password' ? visibilityPassword ? <FaEyeSlash onClick={() => setVisibilityPassword(false)} />   : <FaEye onClick={() => setVisibilityPassword(true)}/>  : null }
             
             </div>

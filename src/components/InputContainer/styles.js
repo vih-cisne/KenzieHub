@@ -40,7 +40,15 @@ export const InputDirection = styled.div`
         border: ${(props) => props.isError ? '1px solid red' : 'none'};
         border-radius: 5px;
         padding: 0.6rem 1rem;
+
+        
+
         animation: ${showUp} 1s;
+
+        ${(props) => !props.delay && css`
+            animation-duration: 0s;
+        `}
+        
         animation-delay: ${(props) => props.delay};
 
         &:focus-within {

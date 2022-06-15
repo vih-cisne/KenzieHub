@@ -37,7 +37,18 @@ export const AnimatedContainer = styled.div`
     padding: 1.4rem;
     background-color: var(--grey-3);
     margin-bottom: 2rem;
+  }
 
+  @media (max-width:500px) {
+    form {
+      width: 80vw;
+
+      input {
+        
+        font-size: small;
+        
+      }
+    }
   }
 
 `;
@@ -49,4 +60,19 @@ export const HeaderRegister = styled.div`
   gap: 20px;
 
   margin: 2rem 0;
+
+  @media (max-width:500px) {
+    width: 80vw;
+  }
+
+  @media (max-width:300px) {
+
+img {
+  width: 50vw;
+}
+
+button {
+  padding: 0.5rem;
+}
+}
 `;

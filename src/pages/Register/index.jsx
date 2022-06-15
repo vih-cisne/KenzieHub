@@ -31,19 +31,20 @@ function Register({ authenticated, setAuthenticated }) {
 
     axios.post('https://kenziehub.herokuapp.com/users', data)
     .then((res) => {
-      console.log(res.data)
       axios.post('https://kenziehub.herokuapp.com/sessions', {email, password})
       .then((res) => {
         toast.success('Cadastro feito com sucesso!',{
-          autoClose:1000
+          autoClose:1000,
+          theme: "dark"
         })
         setAuthenticated(true)
 
-        console.log(res.data)
-
         const { token } = res.data
+        const { id} = res.data.user
 
         localStorage.setItem("@KenzieHub:token", JSON.stringify(token))
+        localStorage.setItem("@KenzieHub:idUser", JSON.stringify(id))
+        
 
         setTimeout(() => {
           return history.push('/home')
@@ -55,11 +56,14 @@ function Register({ authenticated, setAuthenticated }) {
       setAuthenticated(false)
       if(err.response.data.message.includes('Email')) {
         toast.error("Este email já foi cadastrado, tente outro", {
-          autoClose:5000
+          autoClose:5000,
+          theme: "dark",
         })
 
       } else {
-        toast.error("Não foi possível realizar o cadastro")
+        toast.error("Não foi possível realizar o cadastro", {
+          theme: "dark"
+        })
       }
       
     })
@@ -82,7 +86,7 @@ function Register({ authenticated, setAuthenticated }) {
           <p>Rapido e grátis, vamos nessa</p>
           <InputContainer
             delay="10ms"
-            label="Nome"
+            label="Nome*"
             placeholder="Digite aqui seu nome"
             register={register}
             name="name"
@@ -91,7 +95,7 @@ function Register({ authenticated, setAuthenticated }) {
           
           <InputContainer
           delay="200ms"
-            label="Email"
+            label="Email*"
             placeholder="Digite aqui seu email"
             register={register}
             name="email"
@@ -100,7 +104,7 @@ function Register({ authenticated, setAuthenticated }) {
           
           <InputContainer
           delay="300ms"
-            label="Senha"
+            label="Senha*"
             placeholder="Digite aqui sua senha"
             register={register}
             name="password"
@@ -110,7 +114,7 @@ function Register({ authenticated, setAuthenticated }) {
           
           <InputContainer
           delay="400ms"
-            label="Confirmar senha"
+            label="Confirmar senha*"
             placeholder="Digite novamente sua senha"
             register={register}
             name="confirmPassword"
@@ -121,7 +125,7 @@ function Register({ authenticated, setAuthenticated }) {
           <InputContainer
           delay="500ms"
             label="Bio"
-            placeholder="Fale sobre você"
+            placeholder="Fale sobre você*"
             register={register}
             name="bio"
             error={errors.bio?.message}
@@ -134,7 +138,7 @@ function Register({ authenticated, setAuthenticated }) {
             name="contact"
             error={errors.contact?.message}
           />
-          <InputContainer label="Selecionar módulo" delay="700ms" error={errors.course_module?.message}>
+          <InputContainer label="Selecionar módulo*" delay="700ms" error={errors.course_module?.message}>
             <select {...register("course_module")}>
               <option value="Primeiro módulo (Introdução ao Frontend)">
                 Primeiro módulo

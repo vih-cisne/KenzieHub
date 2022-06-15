@@ -21,11 +21,23 @@ export const ButtonStyled = styled.button`
   border: none;
   border-radius: 4px;
   transition: 0.4s;
-  background-color: ${(props) => props.bgColor || "var(--grey-3)"};
+  background-color: ${(props) => props.bgColor || "var(--grey-2)"};
 
   &:disabled {
     filter: brightness(0.8);
   }
+
+  &:hover {
+    filter: brightness(0.8);
+  }
+
+  /*
+  primary
+background: #FF427F;
+background: #59323F;
+grey-1
+grey-2
+*/
 
   animation: ${enabledButton} infinite ${(props) => props.valid ? '2s' : '0s'};
 

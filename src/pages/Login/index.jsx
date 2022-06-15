@@ -35,14 +35,17 @@ function Login({ authenticated, setAuthenticated }) {
     axios.post('https://kenziehub.herokuapp.com/sessions', data).then((res) => {
 
         toast.success('Login feito com sucesso!',{
-          autoClose:1000
+          autoClose:1000,
+          theme: "dark"
         })
 
         setAuthenticated(true)
 
         const { token } = res.data
+        const { id} = res.data.user
 
         localStorage.setItem("@KenzieHub:token", JSON.stringify(token))
+        localStorage.setItem("@KenzieHub:idUser", JSON.stringify(id))
 
         setTimeout(() => {
           history.push('/home')
@@ -50,7 +53,8 @@ function Login({ authenticated, setAuthenticated }) {
     }).catch(() => {
 
       toast.error("Não foi possível realizar o login, verifique email e senha", {
-        autoClose:5000
+        autoClose:5000,
+        theme: "dark"
       })
       
     })
@@ -92,7 +96,7 @@ password: "123456"*/
           
           <InputContainer
           delay="200ms"
-            label="Email"
+            label="Email*"
             placeholder="Digite aqui seu email"
             register={register}
             name="email"
@@ -101,7 +105,7 @@ password: "123456"*/
           
           <InputContainer
           delay="300ms"
-            label="Senha"
+            label="Senha*"
             placeholder="Digite aqui sua senha"
             register={register}
             name="password"
