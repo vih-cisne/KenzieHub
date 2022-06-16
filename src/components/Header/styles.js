@@ -6,9 +6,9 @@ export const HeaderHome = styled.header`
     width: 100%;
     justify-content: space-between;
     align-items: center;
-    background-color: var(--background);
+    background-color: ${(props) => props.theme.background};
     gap: 0.5rem;
-    border-bottom: 1px solid var(--grey-2);
+    border-bottom: 1px solid ${(props) => props.theme.grey2};
     margin-top: 4rem;
     padding: 1rem 15vw;
 

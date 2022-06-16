@@ -12,6 +12,7 @@ import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { Redirect } from "react-router-dom";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import AnimatedPage from "../../components/AnimatedPage";
 
 
 function Login({ authenticated, setAuthenticated }) {
@@ -83,7 +84,7 @@ password: "123456"*/
 }
 
   return (
-    
+    <AnimatedPage>
     <PageLogin>
       <ToastContainer/>
       <HeaderLogin>
@@ -132,6 +133,7 @@ password: "123456"*/
         </form>
       </AnimatedContainer>
     </PageLogin>
+    </AnimatedPage>
   );
 }
 

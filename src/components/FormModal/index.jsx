@@ -1,6 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { AiOutlineClose } from "react-icons/ai";
+import AnimatedModal from "../AnimatedModal";
 import Button from "../Button";
 import InputContainer from "../InputContainer";
 import { FieldModal, HeaderModal, Modal } from "./styles";
@@ -25,8 +26,8 @@ function FormModal({
 
   if (opened) {
     return (
-      <Modal>
-        <div>
+      <Modal onClick={() => setOpened(false)}>
+        <AnimatedModal onClick={(e) => e.stopPropagation()}>
           <HeaderModal>
             {tittle}
             <AiOutlineClose onClick={() => setOpened(false)} />
@@ -69,7 +70,7 @@ function FormModal({
               ))}
             </FieldModal>
           </form>
-        </div>
+        </AnimatedModal>
       </Modal>
     );
   }

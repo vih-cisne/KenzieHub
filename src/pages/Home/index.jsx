@@ -4,7 +4,7 @@ import Header from "../../components/Header";
 import Main from "../../components/Main";
 import NavBar from "../../components/Navbar";
 import Logo from "../../images/Logo.svg";
-import { FaPlus, FaTrashAlt } from "react-icons/fa";
+import { FaPlus, FaEdit } from "react-icons/fa";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { PageHome } from "./styles";
@@ -14,9 +14,10 @@ import FormModal from "../../components/FormModal";
 import { schemaRegisterTech, schemaUpdateTech } from "./validations";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import AnimatedPage from "../../components/AnimatedPage";
 
 
-function Home({ authenticated, setAuthenticated }) {
+function Home({ themeIsDefault, setThemeIsDefault, authenticated, setAuthenticated }) {
   const [token] = useState(
     JSON.parse(localStorage.getItem("@KenzieHub:token")) || ""
   );
@@ -74,6 +75,7 @@ function Home({ authenticated, setAuthenticated }) {
           autoClose:1000,
           theme: "dark"
         })
+        setOpenedForm(false)
         
     }).catch(() => {
 
@@ -107,7 +109,7 @@ function Home({ authenticated, setAuthenticated }) {
   }, [tech])
 
   if (!authenticated) {
-    return <Redirect to="/" />;
+    return <Redirect to="/login" />;
   }
 
   function logout() {
@@ -208,22 +210,23 @@ function Home({ authenticated, setAuthenticated }) {
       bgColor: "var(--color-primary)",
       type: 'submit'
     }, {
-      title: 'Cancelar',
+      title: 'Excluir',
       type: 'button',
-      onClick: () => setOpenedForm(false)
+      onClick: () => deleteFunction(tech.id)
     }])
     setOnSubmitFunction({
       f: onSubmitUpdateTechFunction
     })
     setSchema(schemaUpdateTech)
   }
-
+//onClick={}
 
 
   return (
+    <AnimatedPage>
     <PageHome>
       <NavBar>
-        <img src={Logo} alt="logo" /> <Button onClick={logout}>Sair</Button>
+        <img onClick={() => setThemeIsDefault(!themeIsDefault)} src={Logo} alt="logo" /> <Button onClick={logout}>Sair</Button>
       </NavBar>
       <Header>
         {" "}
@@ -239,29 +242,30 @@ function Home({ authenticated, setAuthenticated }) {
           </div>
           {techs.length>0 ? 
           <ul>
-            
+          
           {techs.map((tech) => (
-            <Button key={tech.id} bgColor="var(--grey-4)" padding="0.5rem">
-              <li>
-                <h3 onClick={() => {
-                  setTech(tech)
-                  
-                }}>{tech.title}</h3>
+           
+              <li key={tech.id}>
+                <h3>{tech.title}</h3>
                 <div>
                   <p>{tech.status}</p>
-                  <FaTrashAlt onClick={() => deleteFunction(tech.id)}/>
+                  <FaEdit onClick={() => {
+                  setTech(tech)
+        
+                }} />
                 </div>
               </li>
-            </Button>
+            
           ))}
         </ul> : <p>Adicione alguma tecnologia</p>}
         </Main>
       </main>
-      <ToastContainer/>
+      <ToastContainer toastStyle={{backgroundColor: "var(--grey-3)"}}/>
       <FormModal onSubmitFunction={onSubmitFunction} schema={schema} buttonForm={buttonForm} tittle={tittleForm} fieldsInputs={fieldsInputs} opened={openedForm} setOpened={setOpenedForm}>
 
       </FormModal>
     </PageHome>
+    </AnimatedPage>
   );
 }
 

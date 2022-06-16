@@ -35,7 +35,7 @@ export const AnimatedContainer = styled.div`
     flex-direction: column;
     gap: 0.8rem;
     padding: 1.4rem;
-    background-color: var(--grey-3);
+    background-color: ${(props) => props.theme.grey3};
     margin-bottom: 2rem;
 
   }

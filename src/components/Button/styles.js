@@ -16,12 +16,12 @@ const enabledButton = keyframes`
 `
 
 export const ButtonStyled = styled.button`
-  color: var(--grey-0);
+  color: ${(props) => props.theme.grey0};
   padding: ${(props) => props.padding || "0.5rem 1rem"};
   border: none;
   border-radius: 4px;
   transition: 0.4s;
-  background-color: ${(props) => props.bgColor || "var(--grey-2)"};
+  background-color: ${(props) => props.bgColor || props.theme.grey2};
 
   &:disabled {
     filter: brightness(0.8);
@@ -47,7 +47,7 @@ grey-2
   
   
   a {
-    color: var(--grey-0);
+    color: ${(props) => props.theme.grey0};
   }
 `;
 

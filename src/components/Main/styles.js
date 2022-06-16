@@ -12,7 +12,7 @@ gap: 1rem;
         display: flex;
         gap: 1rem;
         flex-direction: column;
-        background-color: var(--grey-3);
+        background-color: ${(props) => props.theme.grey3};
         padding: 1rem;
     }
 
@@ -20,8 +20,22 @@ gap: 1rem;
        display: flex;
        padding: 1rem;
        border-radius: 10px;
+       background-color: ${(props) => props.theme.grey4};
        gap: 0.5rem;
        justify-content: space-between;
+       align-items: center;
+       pointer-events: none;
+       transition: 0.4s;
+
+       &:hover {
+        box-shadow: 0 0 0.8em white;
+        transition: 0.4s;
+       }
+
+       svg {
+           cursor: pointer;
+           pointer-events: auto;
+       }
 
        h3 {
            width: 100%;

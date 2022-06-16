@@ -3,10 +3,11 @@ import { useState } from "react";
 import { Route } from "react-router-dom";
 import { Switch } from "react-router-dom";
 import Home from "../pages/Home";
+import Initial from "../pages/Initial";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 
-function Routes() {
+function Routes({themeIsDefault,setThemeIsDefault}) {
 
   const [authenticated, setAuthenticated] = useState(false)
 
@@ -21,15 +22,19 @@ function Routes() {
   }, [authenticated])
   return (
     <Switch>
+      <Route exact path="/">
+        <Initial authenticated={authenticated}/>
+      </Route>
       <Route exact path="/home">
-        <Home authenticated={authenticated} setAuthenticated={setAuthenticated}/>
+        <Home themeIsDefault={themeIsDefault} setThemeIsDefault={setThemeIsDefault} authenticated={authenticated} setAuthenticated={setAuthenticated}/>
       </Route>
       <Route exact path="/register">
         <Register authenticated={authenticated} setAuthenticated={setAuthenticated}/>
       </Route>
-      <Route exact path="/">
+      <Route exact path="/login">
         <Login authenticated={authenticated} setAuthenticated={setAuthenticated} />
       </Route>
+
     </Switch>
   );
 }

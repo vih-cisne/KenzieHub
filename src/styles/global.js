@@ -12,34 +12,20 @@ export default createGlobalStyle`
         text-decoration: none;
     }
 
-    #root {
-        width: 100%;
-    }
-    
     :root {
         --color-primary:#FF577F;
         --color-primary-focus: #FF427F;
         --color-primary-negative: #59323F;
-
-        --grey-4: #121214;
-        --grey-3: #212529;
-        --grey-2: #343B41;
         --grey-1: #868E96;
-        --grey-0: #F8F9FA;
+    }
 
-        --text-white: #fff;
-
-
-        --success: #3FE864;
-        --error: #E83F5B;
-
-        --background: #090909;
-
+    #root {
+        width: 100%;
     }
 
     body {
-        background-color: var(--background);
-        color: var(--grey-0);
+        background-color: ${(props) => props.theme.background};
+        color: ${(props) => props.theme.grey0};
         font-size: 1rem;
         font-family: 'Inter', sans-serif;
         min-height: 100vh;
@@ -48,14 +34,14 @@ export default createGlobalStyle`
     }
 
     span {
-        color: var(--grey-1);
+        color: ${(props) => props.theme.grey1};
     }
 
     h1, h3 {
         font-weight: 700;
     }
     p {
-        color: var(--grey-1);
+        color: ${(props) => props.theme.grey1};
         font-size: 0.8rem;
     }
 

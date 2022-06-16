@@ -10,6 +10,7 @@ import axios from "axios"
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { useHistory } from "react-router-dom";
+import AnimatedPage from "../../components/AnimatedPage";
 
 
 function Register({ authenticated, setAuthenticated }) {
@@ -71,13 +72,13 @@ function Register({ authenticated, setAuthenticated }) {
   };
 
   return (
-    
+    <AnimatedPage>
     <PageRegister>
       <ToastContainer/>
       <HeaderRegister>
         <img src={Logo} alt="logo" />
-        <Link to="/">
-          <Button>Voltar</Button>
+        <Link to="/login">
+          <Button>Login</Button>
         </Link>
       </HeaderRegister>
       <AnimatedContainer>
@@ -171,6 +172,7 @@ function Register({ authenticated, setAuthenticated }) {
         </form>
       </AnimatedContainer>
     </PageRegister>
+    </AnimatedPage>
   );
 }
 

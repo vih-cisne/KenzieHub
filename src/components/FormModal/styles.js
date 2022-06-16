@@ -13,7 +13,7 @@ export const Modal = styled.div`
 
 
     >div {
-        background-color: var(--grey-3);   
+        background-color: ${(props) => props.theme.grey3};   
     }
 
     >div>div {
@@ -33,7 +33,7 @@ export const HeaderModal = styled.div`
     gap: 1rem;
     justify-content: space-between;
     align-items: center;
-    background-color: var(--grey-2);
+    background-color: ${(props) => props.theme.grey2};
 
     svg {
         cursor: pointer;
