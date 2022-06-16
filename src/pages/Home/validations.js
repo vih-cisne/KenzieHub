@@ -6,7 +6,7 @@ export const schemaRegisterTech =  yup.object().shape({
       .required("Informe o nome da tecnologia"),
     status: yup
       .string()
-      //.required("Campo obrigatório") 
+      .required("Campo obrigatório") 
 });
 
 
@@ -17,5 +17,5 @@ export const schemaUpdateTech = yup.object().shape({
       //.required("Informe o nome da tecnologia"),
     status: yup
       .string()
-      //.required("Campo obrigatório")   
+      .required("Altere o status")   
 })

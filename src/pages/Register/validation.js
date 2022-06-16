@@ -5,7 +5,6 @@ export const schema =yup.object().shape({
     email: yup
       .string()
       .email("Formato de email incorreto")
-      //.emailExistence("Esse email já existe")
       .required("E-mail obrigatório"),
     password: yup
       .string()

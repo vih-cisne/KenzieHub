@@ -119,7 +119,6 @@ function Home({ themeIsDefault, setThemeIsDefault, authenticated, setAuthenticat
   }
 
   const onSubmitUpdateTechFunction = (data) => {
-   
 
     axios.put(`https://kenziehub.herokuapp.com/users/techs/${tech.id}`, data, {
       headers: {
@@ -153,19 +152,24 @@ function Home({ themeIsDefault, setThemeIsDefault, authenticated, setAuthenticat
     setFieldsInputs([{
       field: 'input',
       label: 'Nome*',
-      name: 'title', 
+      name: 'title',
     },{
       field: 'select',
       name: 'status',
       label: 'Selecionar status',
       options: [{
+        value: '',
+        text: 'Escolha um status'
+      },{
         value: 'Iniciante',
-        
+        text: 'Iniciante'
       }, {
         value: 'Intermediário',
+        text: 'Intermediário'
        
       }, {
         value: 'Avançado',
+        text: 'Avançado'
         
       }]
     }])
@@ -181,10 +185,9 @@ function Home({ themeIsDefault, setThemeIsDefault, authenticated, setAuthenticat
   }
 
   function openModalUpdate() {
-    
     setOpenedForm(true)
     setTittleForm('Tecnologia detalhes')
-    setFieldsInputs([{
+    const fields = [{
       field: 'input',
       label: 'Nome',
       value: tech.title 
@@ -192,18 +195,23 @@ function Home({ themeIsDefault, setThemeIsDefault, authenticated, setAuthenticat
       field: 'select',
       name: 'status',
       label: 'Selecionar status',
-      value: tech.status,
       options: [{
         value: 'Iniciante',
-        
+        text: 'Iniciante'
       }, {
         value: 'Intermediário',
-        
+        text: 'Intermediário'
+       
       }, {
         value: 'Avançado',
+        text: 'Avançado'
         
       }]
-    }])
+    }]
+    const index = fields[1].options.findIndex((item) => item.text===tech.status)
+    fields[1].options[index].value = ''
+    setFieldsInputs(fields)
+
 
     setButtonForm([{
       title: 'Salvar alterações',
@@ -219,7 +227,7 @@ function Home({ themeIsDefault, setThemeIsDefault, authenticated, setAuthenticat
     })
     setSchema(schemaUpdateTech)
   }
-//onClick={}
+
 
 
   return (
@@ -261,9 +269,10 @@ function Home({ themeIsDefault, setThemeIsDefault, authenticated, setAuthenticat
         </Main>
       </main>
       <ToastContainer toastStyle={{backgroundColor: "var(--grey-3)"}}/>
-      <FormModal onSubmitFunction={onSubmitFunction} schema={schema} buttonForm={buttonForm} tittle={tittleForm} fieldsInputs={fieldsInputs} opened={openedForm} setOpened={setOpenedForm}>
-
-      </FormModal>
+      { openedForm ? 
+        
+          <FormModal setTech={setTech} onSubmitFunction={onSubmitFunction} schema={schema} buttonForm={buttonForm} tittle={tittleForm} fieldsInputs={fieldsInputs} opened={openedForm} setOpened={setOpenedForm}/> : null
+      }
     </PageHome>
     </AnimatedPage>
   );

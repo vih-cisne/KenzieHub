@@ -140,7 +140,8 @@ function Register({ authenticated, setAuthenticated }) {
             error={errors.contact?.message}
           />
           <InputContainer label="Selecionar módulo*" delay="700ms" error={errors.course_module?.message}>
-            <select {...register("course_module")}>
+            <select {...register("course_module")} defaultValue=''>
+              <option value="" disabled={true}>Escolha um módulo</option>
               <option value="Primeiro módulo (Introdução ao Frontend)">
                 Primeiro módulo
               </option>

@@ -14,7 +14,10 @@ function FormModal({
   opened,
   setOpened,
   buttonForm,
+  setTech,
+
 }) {
+  
   const {
     register,
     handleSubmit,
@@ -24,16 +27,21 @@ function FormModal({
     mode: 'onChange'
   });
 
+  function close() {
+    setTech()
+    setOpened(false)
+  }
+
   if (opened) {
     return (
-      <Modal onClick={() => setOpened(false)}>
-        <AnimatedModal onClick={(e) => e.stopPropagation()}>
-          <HeaderModal>
+      <Modal onClick={() => close()}>
+        <AnimatedModal>
+          <HeaderModal onClick={(e) => e.stopPropagation()}>
             {tittle}
-            <AiOutlineClose onClick={() => setOpened(false)} />
+            <AiOutlineClose onClick={() => close()} />
           </HeaderModal>
 
-          <form
+          <form onClick={(e) => e.stopPropagation()}
             action=""
             onSubmit={(e) => {
               handleSubmit(onSubmitFunction.f)(e);
@@ -49,9 +57,9 @@ function FormModal({
                 label={label}
               >
                 {field === "select" && (
-                  <select {...register(name)} defaultValue={value}>
+                  <select {...register(name)} defaultValue=''>
                     {options.map((option, i) => (
-                      <option key={i}>{option.value}</option>
+                      <option value={option.value} disabled={option.value===''} key={i}>{option.text}</option>
                     ))}
                   </select>
                 )}

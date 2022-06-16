@@ -17,6 +17,7 @@ export default createGlobalStyle`
         --color-primary-focus: #FF427F;
         --color-primary-negative: #59323F;
         --grey-1: #868E96;
+        --grey-3: #343B41;
     }
 
     #root {

@@ -29,13 +29,14 @@ export const PageInitial = styled.div`
 
     @media (max-width:600px) {
         flex-direction: column;
-        gap: 0;
+        gap: 2rem;
         
         .logo {
+            padding-top: 1rem;
             width: 100%;
             align-items: center;
             justify-content: flex-end;
-            padding: 10% 0;
+            //padding: 15% 0;
 
             h1 {
                 text-align: center;
