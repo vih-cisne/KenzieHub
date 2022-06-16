@@ -3,48 +3,47 @@ import styled from "styled-components";
 
 export const PageInitial = styled.div`
     display: flex;
-    //flex-direction: column;
-    justify-content: flex-end;
-    align-items: flex-end;
     height: 100vh;
-    position: relative;
+    width: 100vw;
+    align-items: flex-end;
+    gap: 1rem;
+
 
     .logo {
-        position: absolute;
-        top: 5vw;
-        left: 0;
+        height: 100%;
+        width: fit-content;
         display: flex;
+        gap: 1rem;
         flex-direction: column;
         justify-content: center;
-        gap: 1rem;
         align-items: flex-start;
-        width: 50vw;
-        text-align: start;
-        padding-left: 5vw;
-        
-    }
+        padding-left: 10%;
 
-    .lottie {
-        width: auto;
-        height: 70%;
+        h1 {
+            text-align: start;
+            
+        }
     }
-
-    div>div {
-        display: flex;
-    }
+    //justify-content: flex-end;
+    
 
     @media (max-width:600px) {
-
+        flex-direction: column;
+        gap: 0;
+        
         .logo {
-        width: 90vw;
-        gap: 0.8rem;
-        
-    }
+            width: 100%;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 10% 0;
 
-    .lottie {
-        width: auto;
-        height: auto;
-    }
-        
+            h1 {
+                text-align: center;
+                font-size: 1.4rem;
+            }
+
+            //height: fit-content;
+            
+        }
     }
 `
