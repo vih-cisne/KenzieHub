@@ -18,7 +18,11 @@ const enabledButton = keyframes`
 export const ButtonStyled = styled.button`
   color: ${(props) => props.theme.grey0};
   padding: ${(props) => props.padding || "0.5rem 1rem"};
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: none;
+  font-size: ${(props) => props.fontSize || null};
   border-radius: 4px;
   transition: 0.4s;
   background-color: ${(props) => props.bgColor || props.theme.grey2};
@@ -31,21 +35,8 @@ export const ButtonStyled = styled.button`
     filter: brightness(0.8);
   }
 
-  /*
-  primary
-background: #FF427F;
-background: #59323F;
-grey-1
-grey-2
-*/
-
   animation: ${enabledButton} infinite ${(props) => props.valid ? '2s' : '0s'};
 
-  
-  
-
-  
-  
   a {
     color: ${(props) => props.theme.grey0};
   }

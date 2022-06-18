@@ -18,7 +18,7 @@ function ContentTechnologies({openModalAdd, techs, setTech}) {
           <ul>
             {techs.map((tech) => 
 
-            <CardTech key={tech.id} tech={tech} setTech={setTech} Icon={FaEdit}/>
+            <CardTech key={tech.id} tech={tech} setTech={setTech}/>
            
            )}
          

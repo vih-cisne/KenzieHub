@@ -10,6 +10,8 @@ export default createGlobalStyle`
 
     a {
         text-decoration: none;
+        display: flex;
+      justify-content: center;
     }
 
     :root {

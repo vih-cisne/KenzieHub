@@ -1,19 +1,44 @@
-import { Work } from "./styles";
-import { Link } from 'react-router-dom';
-function CardWork({work, setWork, Icon, setOpenedModal, setMesage}) {
+import { useEffect, useState } from "react";
+import { Work, ImagePrincipal } from "./styles";
+import { BsGithub } from "react-icons/bs";
+import { FaLaptopCode, FaFileCode, FaGithubSquare, FaGithubAlt, FaEdit } from "react-icons/fa";
+import { AiOutlineCodeSandbox } from "react-icons/ai";
+import { GiTechnoHeart } from "react-icons/gi";
+import { GrTechnology } from "react-icons/gr";
+function CardWork({work, setWork, setOpenedModal, setMesage}) {
 
+  const [link, setLink] = useState('')
 
+  useEffect(() => {
+
+    if(work.deploy_url.includes('http')) {
+      setLink(work.deploy_url)
+    } else {
+  
+      setLink(`https://${work.deploy_url}`)
+  
+    }
+
+  }, [])
     
     return (
         <Work>
-             <h3>{work.title}</h3>
+          <ImagePrincipal>
+
+            <AiOutlineCodeSandbox/>
+          </ImagePrincipal>
              <div>
-               <p onClick={() => {
+             <h3>{work.title}</h3>
+             <p onClick={() => {
                  setOpenedModal(true)
-                 setMesage(work.description)
+                 setMesage(<p>{work.description}</p>)
                }}>Ver descrição</p>
-               <a href={work.deploy_url} /*to={{ pathname: work.deploy_url }} target="_blank"*/>Link projeto</a>
-               <Icon onClick={() => {
+             </div>
+
+             <div>
+               
+               <a href={link} target="_blank" rel="noreferrer" ><BsGithub/></a>
+               <FaEdit className="edit" onClick={() => {
               setWork(work)
             }}/>
                

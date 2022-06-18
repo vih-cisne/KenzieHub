@@ -19,11 +19,11 @@ function ModalC ({
     return (
       <Modal onClick={() => close()}>
         <AnimatedModal>
-          <HeaderModal onClick={(e) => e.stopPropagation()}>
-            <AiOutlineClose onClick={() => close()} />
-          </HeaderModal>
 
           <MesageModal onClick={(e) => e.stopPropagation()}>{mesage}</MesageModal>
+          <HeaderModal onClick={(e) => e.stopPropagation()}>
+            <p onClick={() => close()}>FECHAR</p>
+          </HeaderModal>
             
             
          

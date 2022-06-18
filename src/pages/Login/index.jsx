@@ -40,8 +40,6 @@ function Login({ authenticated, setAuthenticated }) {
           theme: "dark"
         })
 
-        setAuthenticated(true)
-
         const { token } = res.data
         const { id} = res.data.user
 
@@ -49,8 +47,9 @@ function Login({ authenticated, setAuthenticated }) {
         localStorage.setItem("@KenzieHub:idUser", JSON.stringify(id))
 
         setTimeout(() => {
+          setAuthenticated(true)
           history.push('/home')
-        }, 1200);
+        }, 2000);
     }).catch(() => {
 
       toast.error("Não foi possível realizar o login, verifique email e senha", {

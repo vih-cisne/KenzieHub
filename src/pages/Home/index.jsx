@@ -10,16 +10,18 @@ import { useEffect, useState } from "react";
 import { PageHome } from "./styles";
 import FormModal from "../../components/FormModal";
 import { schemaRegisterTech, schemaUpdateTech, schemaRegisterWork, schemaUpdateWork } from "./validations";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { MdLogout } from "react-icons/md";
-
 import 'react-toastify/dist/ReactToastify.css';
 import AnimatedPage from "../../components/AnimatedPage";
 import ModalConfirmation from "../../components/ModalConfirmation";
 import ContentTechnologies from "../../components/ContentTechnologies";
 import ContentWorks from "../../components/ContentWorks";
-import { Modal } from "../../components/Modal/styles";
 import ModalC from "../../components/Modal";
+import { buttonsRegisterTech, buttonsRegisterWork, buttonsUpdateTech, buttonsUpdateWork, fieldsRegisterTech, fieldsRegisterWork, fieldsUpdateTech, fieldsUpdateWork } from "./fields";
+import ToastTechnologie from "../../components/ToastTechnologie";
+import AnimationComputer from "../../components/AnimationComputer";
+import AnimationError from "../../components/AnimationError";
 
 
 function Home({ themeIsDefault, setThemeIsDefault, authenticated, setAuthenticated }) {
@@ -44,98 +46,60 @@ function Home({ themeIsDefault, setThemeIsDefault, authenticated, setAuthenticat
   const [works, setWorks] = useState([])
   const [work, setWork] = useState()
   const [mesageModal, setMesage] = useState()
+  const [mesageConfirm, setMesageConfirm] = useState('')
+  const [functionOnConfirm, setFunctionOnConfirm] = useState({f: {}})
   
   
-  const onSubmitRegisterTechFunction = (data) => {
+  const onSubmitRegisterTechFunction = async (data) => {
 
+    const result = await requisition(data, undefined, 'Tecnologia adicionada com sucesso!',"Ocorreu algum erro, talvez você já tenha adicionado essa tecnologia, tente atualizá-la", 'techs', 'post')
+    if(result) {
+      setTechs([...techs, result])
+    }
 
-    axios.post('https://kenziehub.herokuapp.com/users/techs', data, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    }).then((res) => {
-      setTechs([...techs, res.data])
-        toast.success('Tecnologia adicionada!',{
-          autoClose:1000,
-          theme: "dark"
-        })
-
-        setOpenedForm(false)
-
-        
-    }).catch(() => {
-      
-      toast.error("Ocorreu algum erro, talvez você já tenha adicionado essa tecnologia, tente atualizá-la", {
-        autoClose:5000, 
-        theme: "dark"
-      })
-      
-    })
   }
   
   const [onSubmitFunction, setOnSubmitFunction] = useState({f: {}})
   function deleteFunction() {
 
     if(onTechnologies) {
-      deleteTech()
+      requisitionDelete('techs', tech.id, 'Tecnologia deletada com successo!',"Ocorreu algum erro, tente novamente")
     } else {
-      deleteWork()
-    }
-    
+      requisitionDelete('works', work.id, 'Projeto deletado com successo!', "Ocorreu algum erro, tente novamente")
+    } 
   }
 
-  function deleteTech() {
-    axios.delete(`https://kenziehub.herokuapp.com/users/techs/${tech.id}`, {
+  function showSuccess(mesage) {
+    toast.success(<><div className="computer"><AnimationComputer/></div><div>{mesage}</div></>,{
+      autoClose:1000,
+      theme: "dark"
+    })
+  }
+
+  function showError(mesage) {
+    toast.error(<><div><AnimationError/></div><div>{mesage}</div></>, {
+      autoClose:5000,
+      theme: "dark"
+    })
+
+  }
+
+  function requisitionDelete(endpoint, id, mesageSuccess, mesageError) {
+    axios.delete(`https://kenziehub.herokuapp.com/users/${endpoint}/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
     }).then((res) => {
 
       loadUserInfo()
-        toast.success('Tecnologia deletada!',{
-          autoClose:1000,
-          theme: "dark"
-        })
+        showSuccess(mesageSuccess)
         setOpenedForm(false)
         setOpenedModalConfirm(false)
         
     }).catch(() => {
-
-      toast.error("Ocorreu algum erro, tente novamente", {
-        autoClose:5000,
-        theme: "dark"
-      })
-      //setOpenedModalConfirm(false)
-      
+      showError(mesageError)
     })
   }
-
-  function deleteWork() {
-    axios.delete(`https://kenziehub.herokuapp.com/users/works/${work.id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    }).then((res) => {
-
-      loadUserInfo()
-        toast.success('Projeto deletado!',{
-          autoClose:1000,
-          theme: "dark"
-        })
-        setOpenedForm(false)
-        setOpenedModalConfirm(false)
-        
-    }).catch(() => {
-
-      toast.error("Ocorreu algum erro, tente novamente", {
-        autoClose:5000,
-        theme: "dark"
-      })
-      //setOpenedModalConfirm(false)
-      
-    })
-  }
-
 
 
   function loadUserInfo() {
@@ -169,35 +133,15 @@ function Home({ themeIsDefault, setThemeIsDefault, authenticated, setAuthenticat
   function openModalUpdateWork() {
     setOpenedForm(true)
     setTittleForm('Projeto detalhes')
-    const fields = [{
-      field: 'input',
-      label: 'Título',
-      name: 'title',
-      defaultValue: work.title 
-    },{
-      field: 'input',
-      label: 'Descrição',
-      name: 'description',
-      defaultValue: work.description 
-    },{
-      field: 'input',
-      label: 'Link do projeto',
-      name: 'deploy_url',
-      defaultValue: work.deploy_url 
-    }]
+    const fields = fieldsUpdateWork(work)
     
     setFieldsInputs(fields)
 
-
-    setButtonForm([{
-      title: 'Salvar alterações',
-      bgColor: "var(--color-primary)",
-      type: 'submit'
-    }, {
-      title: 'Excluir',
-      type: 'button',
-      onClick: () => setOpenedModalConfirm(true)
-    }])
+    setButtonForm(buttonsUpdateWork({f: () => {
+      setOpenedModalConfirm(true)
+      setMesageConfirm('Deseja mesmo excluir esse projeto?')
+      setFunctionOnConfirm({f: deleteFunction})
+    }}))
     setOnSubmitFunction({
       f: onSubmitUpdateWorkFunction
     })
@@ -206,37 +150,10 @@ function Home({ themeIsDefault, setThemeIsDefault, authenticated, setAuthenticat
 
   function onSubmitUpdateWorkFunction(data) {
 
-    axios.put(`https://kenziehub.herokuapp.com/users/works/${work.id}`, data, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    }).then((res) => {
-      
-      loadUserInfo()
-        toast.success('Projeto alterado!',{
-          autoClose:1000,
-          theme: "dark"
-      })
-
-      setOpenedForm(false)
-        
-    }).catch((err) => {
-
-      toast.error("Ocorreu algum erro, tente novamente", {
-        autoClose:5000,
-        theme: "dark"
-      })
-
-      
-    })
+    requisition(data, work.id, 'Projeto alterado com sucesso!',"Ocorreu algum erro, tente novamente", 'works', 'put')
 
   }
     
-    
-      
-
-  
-
   if (!authenticated) {
     return <Redirect to="/login" />;
   }
@@ -247,176 +164,88 @@ function Home({ themeIsDefault, setThemeIsDefault, authenticated, setAuthenticat
     setAuthenticated(false);
   }
 
-  const onSubmitUpdateTechFunction = (data) => {
+  async function requisition(data, id, mesageSuccess, mesageError, endpoint, method) {
 
-    axios.put(`https://kenziehub.herokuapp.com/users/techs/${tech.id}`, data, {
+
+    const result = await axios[method](`https://kenziehub.herokuapp.com/users/${endpoint}${!!id ?`/${id}` : ''}`, data, {
       headers: {
         Authorization: `Bearer ${token}`
       }
     }).then((res) => {
       
       loadUserInfo()
-        toast.success('Tecnologia alterada!',{
-          autoClose:1000,
-          theme: "dark"
-      })
+      showSuccess(mesageSuccess)
 
       setOpenedForm(false)
+
+      return res.data
         
     }).catch((err) => {
 
-      toast.error("Ocorreu algum erro, tente novamente", {
-        autoClose:5000,
-        theme: "dark"
-      })
-
+      showError(mesageError)
       
     })
+
+    return result
+  }
+
+  const onSubmitUpdateTechFunction = (data) => {
+
+    requisition(data, tech.id, 'Tecnologia alterada com sucesso!',"Ocorreu algum erro, tente novamente", 'techs', 'put')
   }
 
   function openModalAdd() {
     
     setOpenedForm(true)
     setTittleForm('Cadastrar tecnologia')
-    setFieldsInputs([{
-      field: 'input',
-      label: 'Nome*',
-      name: 'title',
-    },{
-      field: 'select',
-      name: 'status',
-      label: 'Selecionar status',
-      options: [{
-        value: '',
-        text: 'Escolha um status'
-      },{
-        value: 'Iniciante',
-        text: 'Iniciante'
-      }, {
-        value: 'Intermediário',
-        text: 'Intermediário'
-       
-      }, {
-        value: 'Avançado',
-        text: 'Avançado'
-        
-      }]
-    }])
-    setButtonForm([{
-      title: 'Cadastrar tecnologia',
-      bgColor: "var(--color-primary)",
-      type: 'submit'
-    }])
+    setFieldsInputs(fieldsRegisterTech)
+    setButtonForm(buttonsRegisterTech)
     setOnSubmitFunction({
       f: onSubmitRegisterTechFunction
     })
     setSchema(schemaRegisterTech)
   }
 
-  function onSubmitRegisterWorkFunction(data) {
-    axios.post('https://kenziehub.herokuapp.com/users/works', data, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    }).then((res) => {
-      setWorks([...works, res.data])
-        toast.success('Projeto adicionado!',{
-          autoClose:1000,
-          theme: "dark"
-        })
-
-        setOpenedForm(false)
-
-        
-    }).catch(() => {
-      
-      toast.error("Ocorreu algum erro, tente novamente", {
-        autoClose:5000, 
-        theme: "dark"
-      })
-      
-    })
+  async function onSubmitRegisterWorkFunction(data) {
+    const result = await requisition(data, undefined, 'Projeto adicionado com sucesso!',"Ocorreu algum erro, tente novamente", 'works', 'post')
+    if(result) {
+      setWorks([...works, result])
+    }
+    
   }
 
   function openModalWorkAdd() {
     
     setOpenedForm(true)
     setTittleForm('Cadastrar projeto')
-    setFieldsInputs([{
-      field: 'input',
-      label: 'Título*',
-      name: 'title',
-    },{
-      field: 'input',
-      label: 'Descrição*',
-      name: 'description',
-    },{
-      field: 'input',
-      label: 'Link do projeto*',
-      name: 'deploy_url',
-    }])
-    setButtonForm([{
-      title: 'Cadastrar Projeto',
-      bgColor: "var(--color-primary)",
-      type: 'submit'
-    }])
+    setFieldsInputs(fieldsRegisterWork)
+    setButtonForm(buttonsRegisterWork)
     setOnSubmitFunction({
       f: onSubmitRegisterWorkFunction
     })
     setSchema(schemaRegisterWork)
   }
 
-  /*{
-	"title": "KenzieHub",
-	"description": "I was the backend developer of this project, and i did it using Typescript and NodeJS",
-	"deploy_url": "https://kenziehub.me"
-}*/
 
   function openModalUpdate() {
     setOpenedForm(true)
     setTittleForm('Tecnologia detalhes')
-    const fields = [{
-      field: 'input',
-      label: 'Nome',
-      value: tech.title 
-    },{
-      field: 'select',
-      name: 'status',
-      label: 'Selecionar status',
-      options: [{
-        value: 'Iniciante',
-        text: 'Iniciante'
-      }, {
-        value: 'Intermediário',
-        text: 'Intermediário'
-       
-      }, {
-        value: 'Avançado',
-        text: 'Avançado'
-        
-      }]
-    }]
+    const fields = fieldsUpdateTech(tech)
     const index = fields[1].options.findIndex((item) => item.text===tech.status)
     fields[1].options[index].value = ''
     setFieldsInputs(fields)
 
-
-    setButtonForm([{
-      title: 'Salvar alterações',
-      bgColor: "var(--color-primary)",
-      type: 'submit'
-    }, {
-      title: 'Excluir',
-      type: 'button',
-      onClick: () => setOpenedModalConfirm(true)
-    }])
+    const buttons = buttonsUpdateTech({f:() => {
+      setOpenedModalConfirm(true)
+      setMesageConfirm('Deseja mesmo excluir essa tecnologia?')
+      setFunctionOnConfirm({f: deleteFunction})
+    }})
+    setButtonForm(buttons)
     setOnSubmitFunction({
       f: onSubmitUpdateTechFunction
     })
     setSchema(schemaUpdateTech)
   }
-
-
 
   return (
     <AnimatedPage>
@@ -424,9 +253,13 @@ function Home({ themeIsDefault, setThemeIsDefault, authenticated, setAuthenticat
       <NavBar>
         <img onClick={() => setThemeIsDefault(!themeIsDefault)} src={Logo} alt="logo" />
         <div>
-        <Button onClick={logout}><MdLogout/></Button>
-        <Button onClick={() => setOnTechnologies(true)} bgColor={onTechnologies ? "var(--color-primary)" : null} ><FaLaptopCode/></Button>
-        <Button onClick={() => setOnTechnologies(false)} bgColor={!onTechnologies ? "var(--color-primary)" : null}><FaFileCode/></Button>
+        <Button fontSize="1.3rem" padding="0.2rem 0.5rem" onClick={() => {
+      setOpenedModalConfirm(true)
+      setMesageConfirm('Deseja mesmo sair?')
+      setFunctionOnConfirm({f: logout})
+    }}><MdLogout/></Button>
+        <Button fontSize="1.3rem" padding="0.2rem 0.5rem"  onClick={() => setOnTechnologies(true)} bgColor={onTechnologies ? "var(--color-primary)" : null} ><FaLaptopCode/></Button>
+        <Button fontSize="1.3rem" padding="0.2rem 0.5rem"  onClick={() => setOnTechnologies(false)} bgColor={!onTechnologies ? "var(--color-primary)" : null}><FaFileCode/></Button>
         </div> 
       </NavBar>
       <Header>
@@ -438,27 +271,25 @@ function Home({ themeIsDefault, setThemeIsDefault, authenticated, setAuthenticat
          {onTechnologies ?  <ContentTechnologies openModalAdd={openModalAdd} techs={techs} setTech={setTech} /> 
          : <ContentWorks setMesage={setMesage} setOpenedModal={setOpenedModal} openModalAdd={openModalWorkAdd} works={works} setWork={setWork} />}
           
-
-
-          
         </Main>
       </main>
-      <ToastContainer toastStyle={{backgroundColor: "var(--grey-3)"}}/>
+      <ToastTechnologie/>
+      
       { openedForm ? 
         
-          <FormModal setTech={setTech} onSubmitFunction={onSubmitFunction} schema={schema} buttonForm={buttonForm} tittle={tittleForm} fieldsInputs={fieldsInputs} opened={openedForm} setOpened={setOpenedForm}/> : null
+          <FormModal setTech={onTechnologies ? setTech : setWork} onSubmitFunction={onSubmitFunction} schema={schema} buttonForm={buttonForm} tittle={tittleForm} fieldsInputs={fieldsInputs} opened={openedForm} setOpened={setOpenedForm}/> : null
       }
 
       {
         openedModalConfirm ? 
-        <ModalConfirmation  mesage={`Deseja mesmo excluir ${onTechnologies ? 'essa tedcnologia' : 'esse projeto'}?`} setOpened={setOpenedModalConfirm} opened={openedModalConfirm} buttons={[{
+        <ModalConfirmation  mesage={mesageConfirm} setOpened={setOpenedModalConfirm} opened={openedModalConfirm} buttons={[{
           title: 'Não',
           onClick: () => setOpenedModalConfirm(false)
         }, {
           bgColor: "var(--color-primary)",
           title: 'Sim',
           type: 'button',
-          onClick: () => deleteFunction()
+          onClick: functionOnConfirm.f
         }]}/> : null
       }
       {

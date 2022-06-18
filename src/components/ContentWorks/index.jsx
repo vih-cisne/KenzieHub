@@ -1,6 +1,8 @@
-import { FaPlus, FaEdit } from "react-icons/fa";
+import { FaPlus} from "react-icons/fa";
 import Button from "../../components/Button";
 import CardWork from "../CardWork";
+
+
 
 
 function ContentWorks({openModalAdd, works, setWork, setOpenedModal, setMesage}) {
@@ -18,7 +20,7 @@ function ContentWorks({openModalAdd, works, setWork, setOpenedModal, setMesage})
           <ul>
             {works.map((work) => 
 
-            <CardWork setMesage={setMesage} setOpenedModal={setOpenedModal} key={work.id} work={work} setWork={setWork} Icon={FaEdit}/>
+            <CardWork setMesage={setMesage} setOpenedModal={setOpenedModal} key={work.id} work={work} setWork={setWork}/>
            
            )}
          

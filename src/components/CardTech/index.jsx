@@ -1,18 +1,26 @@
+import {  FaEdit } from "react-icons/fa";
+import { GiTechnoHeart } from "react-icons/gi";
+import { ImagePrincipal, Tech } from "./styles";
 
-
-function CardTech({tech, setTech, Icon}) {
+function CardTech({tech, setTech}) {
     
     return (
-        <li>
-             <h3>{tech.title}</h3>
+        <Tech>
+            <ImagePrincipal>
+
+            <GiTechnoHeart/>
+            </ImagePrincipal>
              <div>
-               <p>{tech.status}</p>
-               <Icon onClick={() => {
+             <h3>{tech.title}</h3>
+            <p>{tech.status}</p>
+             </div>
+             <div>
+               <FaEdit className="edit" onClick={() => {
               setTech(tech)
             }}/>
                
              </div>
-        </li>
+        </Tech>
     )
 }
 

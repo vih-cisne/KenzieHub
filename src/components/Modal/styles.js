@@ -39,6 +39,14 @@ export const Modal = styled.div`
 
 export const MesageModal = styled.div`
     max-width: 90vw;
+
+    >p {
+        color: 15px solid ${(props) => props.theme.grey0};
+        display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    }
 `
 
 export const HeaderModal = styled.div`
@@ -47,9 +55,12 @@ export const HeaderModal = styled.div`
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    
     //background-color: ${(props) => props.theme.grey2};
 
-    svg {
+    p {
         cursor: pointer;
+        font-size: 0.7rem;
+        color: red;
     }
 `
