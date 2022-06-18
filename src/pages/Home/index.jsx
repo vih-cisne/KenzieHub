@@ -4,17 +4,22 @@ import Header from "../../components/Header";
 import Main from "../../components/Main";
 import NavBar from "../../components/Navbar";
 import Logo from "../../images/Logo.svg";
-import { FaPlus, FaEdit } from "react-icons/fa";
+import { FaLaptopCode, FaFileCode } from "react-icons/fa";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { PageHome } from "./styles";
 import FormModal from "../../components/FormModal";
-
-//import { AnimatedContainer, PageLogin, HeaderLogin } from "./styles";
-import { schemaRegisterTech, schemaUpdateTech } from "./validations";
+import { schemaRegisterTech, schemaUpdateTech, schemaRegisterWork, schemaUpdateWork } from "./validations";
 import { toast, ToastContainer } from "react-toastify";
+import { MdLogout } from "react-icons/md";
+
 import 'react-toastify/dist/ReactToastify.css';
 import AnimatedPage from "../../components/AnimatedPage";
+import ModalConfirmation from "../../components/ModalConfirmation";
+import ContentTechnologies from "../../components/ContentTechnologies";
+import ContentWorks from "../../components/ContentWorks";
+import { Modal } from "../../components/Modal/styles";
+import ModalC from "../../components/Modal";
 
 
 function Home({ themeIsDefault, setThemeIsDefault, authenticated, setAuthenticated }) {
@@ -33,6 +38,12 @@ function Home({ themeIsDefault, setThemeIsDefault, authenticated, setAuthenticat
   const [buttonForm, setButtonForm] = useState([])
   const [schema, setSchema] = useState(schemaRegisterTech)
   const [tech, setTech] = useState()
+  const [openedModalConfirm, setOpenedModalConfirm] = useState(false)
+  const [openedModal, setOpenedModal] = useState(false) 
+  const [onTechnologies, setOnTechnologies] = useState(true)
+  const [works, setWorks] = useState([])
+  const [work, setWork] = useState()
+  const [mesageModal, setMesage] = useState()
   
   
   const onSubmitRegisterTechFunction = (data) => {
@@ -63,8 +74,18 @@ function Home({ themeIsDefault, setThemeIsDefault, authenticated, setAuthenticat
   }
   
   const [onSubmitFunction, setOnSubmitFunction] = useState({f: {}})
-  function deleteFunction(id) {
-    axios.delete(`https://kenziehub.herokuapp.com/users/techs/${id}`, {
+  function deleteFunction() {
+
+    if(onTechnologies) {
+      deleteTech()
+    } else {
+      deleteWork()
+    }
+    
+  }
+
+  function deleteTech() {
+    axios.delete(`https://kenziehub.herokuapp.com/users/techs/${tech.id}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -76,6 +97,7 @@ function Home({ themeIsDefault, setThemeIsDefault, authenticated, setAuthenticat
           theme: "dark"
         })
         setOpenedForm(false)
+        setOpenedModalConfirm(false)
         
     }).catch(() => {
 
@@ -83,6 +105,33 @@ function Home({ themeIsDefault, setThemeIsDefault, authenticated, setAuthenticat
         autoClose:5000,
         theme: "dark"
       })
+      //setOpenedModalConfirm(false)
+      
+    })
+  }
+
+  function deleteWork() {
+    axios.delete(`https://kenziehub.herokuapp.com/users/works/${work.id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).then((res) => {
+
+      loadUserInfo()
+        toast.success('Projeto deletado!',{
+          autoClose:1000,
+          theme: "dark"
+        })
+        setOpenedForm(false)
+        setOpenedModalConfirm(false)
+        
+    }).catch(() => {
+
+      toast.error("Ocorreu algum erro, tente novamente", {
+        autoClose:5000,
+        theme: "dark"
+      })
+      //setOpenedModalConfirm(false)
       
     })
   }
@@ -94,6 +143,8 @@ function Home({ themeIsDefault, setThemeIsDefault, authenticated, setAuthenticat
       .get(`https://kenziehub.herokuapp.com/users/${idUser}`)
       .then((res) => {setUser(res.data)
         setTechs(res.data.techs)
+        setWorks(res.data.works)
+        
       })
       .catch((err) => {console.log(err)});
   }
@@ -107,6 +158,84 @@ function Home({ themeIsDefault, setThemeIsDefault, authenticated, setAuthenticat
       openModalUpdate()
     }
   }, [tech])
+
+  useEffect(() => {
+    if(work) {
+      
+      openModalUpdateWork()
+    }
+  }, [work])
+
+  function openModalUpdateWork() {
+    setOpenedForm(true)
+    setTittleForm('Projeto detalhes')
+    const fields = [{
+      field: 'input',
+      label: 'Título',
+      name: 'title',
+      defaultValue: work.title 
+    },{
+      field: 'input',
+      label: 'Descrição',
+      name: 'description',
+      defaultValue: work.description 
+    },{
+      field: 'input',
+      label: 'Link do projeto',
+      name: 'deploy_url',
+      defaultValue: work.deploy_url 
+    }]
+    
+    setFieldsInputs(fields)
+
+
+    setButtonForm([{
+      title: 'Salvar alterações',
+      bgColor: "var(--color-primary)",
+      type: 'submit'
+    }, {
+      title: 'Excluir',
+      type: 'button',
+      onClick: () => setOpenedModalConfirm(true)
+    }])
+    setOnSubmitFunction({
+      f: onSubmitUpdateWorkFunction
+    })
+    setSchema(schemaUpdateWork)
+  }
+
+  function onSubmitUpdateWorkFunction(data) {
+
+    axios.put(`https://kenziehub.herokuapp.com/users/works/${work.id}`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).then((res) => {
+      
+      loadUserInfo()
+        toast.success('Projeto alterado!',{
+          autoClose:1000,
+          theme: "dark"
+      })
+
+      setOpenedForm(false)
+        
+    }).catch((err) => {
+
+      toast.error("Ocorreu algum erro, tente novamente", {
+        autoClose:5000,
+        theme: "dark"
+      })
+
+      
+    })
+
+  }
+    
+    
+      
+
+  
 
   if (!authenticated) {
     return <Redirect to="/login" />;
@@ -184,6 +313,65 @@ function Home({ themeIsDefault, setThemeIsDefault, authenticated, setAuthenticat
     setSchema(schemaRegisterTech)
   }
 
+  function onSubmitRegisterWorkFunction(data) {
+    axios.post('https://kenziehub.herokuapp.com/users/works', data, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).then((res) => {
+      setWorks([...works, res.data])
+        toast.success('Projeto adicionado!',{
+          autoClose:1000,
+          theme: "dark"
+        })
+
+        setOpenedForm(false)
+
+        
+    }).catch(() => {
+      
+      toast.error("Ocorreu algum erro, tente novamente", {
+        autoClose:5000, 
+        theme: "dark"
+      })
+      
+    })
+  }
+
+  function openModalWorkAdd() {
+    
+    setOpenedForm(true)
+    setTittleForm('Cadastrar projeto')
+    setFieldsInputs([{
+      field: 'input',
+      label: 'Título*',
+      name: 'title',
+    },{
+      field: 'input',
+      label: 'Descrição*',
+      name: 'description',
+    },{
+      field: 'input',
+      label: 'Link do projeto*',
+      name: 'deploy_url',
+    }])
+    setButtonForm([{
+      title: 'Cadastrar Projeto',
+      bgColor: "var(--color-primary)",
+      type: 'submit'
+    }])
+    setOnSubmitFunction({
+      f: onSubmitRegisterWorkFunction
+    })
+    setSchema(schemaRegisterWork)
+  }
+
+  /*{
+	"title": "KenzieHub",
+	"description": "I was the backend developer of this project, and i did it using Typescript and NodeJS",
+	"deploy_url": "https://kenziehub.me"
+}*/
+
   function openModalUpdate() {
     setOpenedForm(true)
     setTittleForm('Tecnologia detalhes')
@@ -220,7 +408,7 @@ function Home({ themeIsDefault, setThemeIsDefault, authenticated, setAuthenticat
     }, {
       title: 'Excluir',
       type: 'button',
-      onClick: () => deleteFunction(tech.id)
+      onClick: () => setOpenedModalConfirm(true)
     }])
     setOnSubmitFunction({
       f: onSubmitUpdateTechFunction
@@ -234,7 +422,12 @@ function Home({ themeIsDefault, setThemeIsDefault, authenticated, setAuthenticat
     <AnimatedPage>
     <PageHome>
       <NavBar>
-        <img onClick={() => setThemeIsDefault(!themeIsDefault)} src={Logo} alt="logo" /> <Button onClick={logout}>Sair</Button>
+        <img onClick={() => setThemeIsDefault(!themeIsDefault)} src={Logo} alt="logo" />
+        <div>
+        <Button onClick={logout}><MdLogout/></Button>
+        <Button onClick={() => setOnTechnologies(true)} bgColor={onTechnologies ? "var(--color-primary)" : null} ><FaLaptopCode/></Button>
+        <Button onClick={() => setOnTechnologies(false)} bgColor={!onTechnologies ? "var(--color-primary)" : null}><FaFileCode/></Button>
+        </div> 
       </NavBar>
       <Header>
         {" "}
@@ -242,36 +435,34 @@ function Home({ themeIsDefault, setThemeIsDefault, authenticated, setAuthenticat
       </Header>
       <main>
         <Main>
-          <div>
-            <h3>Tecnologias</h3>
-            <Button onClick={openModalAdd} padding="0.2rem 0.5rem">
-              <FaPlus />
-            </Button>
-          </div>
-          {techs.length>0 ? 
-          <ul>
+         {onTechnologies ?  <ContentTechnologies openModalAdd={openModalAdd} techs={techs} setTech={setTech} /> 
+         : <ContentWorks setMesage={setMesage} setOpenedModal={setOpenedModal} openModalAdd={openModalWorkAdd} works={works} setWork={setWork} />}
           
-          {techs.map((tech) => (
-           
-              <li key={tech.id}>
-                <h3>{tech.title}</h3>
-                <div>
-                  <p>{tech.status}</p>
-                  <FaEdit onClick={() => {
-                  setTech(tech)
-        
-                }} />
-                </div>
-              </li>
-            
-          ))}
-        </ul> : <p>Adicione alguma tecnologia</p>}
+
+
+          
         </Main>
       </main>
       <ToastContainer toastStyle={{backgroundColor: "var(--grey-3)"}}/>
       { openedForm ? 
         
           <FormModal setTech={setTech} onSubmitFunction={onSubmitFunction} schema={schema} buttonForm={buttonForm} tittle={tittleForm} fieldsInputs={fieldsInputs} opened={openedForm} setOpened={setOpenedForm}/> : null
+      }
+
+      {
+        openedModalConfirm ? 
+        <ModalConfirmation  mesage={`Deseja mesmo excluir ${onTechnologies ? 'essa tedcnologia' : 'esse projeto'}?`} setOpened={setOpenedModalConfirm} opened={openedModalConfirm} buttons={[{
+          title: 'Não',
+          onClick: () => setOpenedModalConfirm(false)
+        }, {
+          bgColor: "var(--color-primary)",
+          title: 'Sim',
+          type: 'button',
+          onClick: () => deleteFunction()
+        }]}/> : null
+      }
+      {
+        openedModal ? <ModalC mesage={mesageModal} opened={openedModal} setOpenedModal={setOpenedModal}/> : null
       }
     </PageHome>
     </AnimatedPage>

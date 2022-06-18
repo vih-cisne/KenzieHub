@@ -30,10 +30,12 @@ export const PageInitial = styled.div`
     @media (max-width:600px) {
         flex-direction: column;
         gap: 2rem;
+        align-items: center;
         
         .logo {
             padding-top: 1rem;
             width: 100%;
+            padding-left: 0;
             align-items: center;
             justify-content: flex-end;
             //padding: 15% 0;

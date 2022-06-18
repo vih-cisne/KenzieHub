@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schema } from "./validation";
 import axios from "axios"
+import { MdEmail, MdLock, MdPerson, MdViewModule, MdComment, MdPermContactCalendar } from "react-icons/md";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { useHistory } from "react-router-dom";
@@ -92,6 +93,7 @@ function Register({ authenticated, setAuthenticated }) {
             register={register}
             name="name"
             error={errors.name?.message}
+            Icon={MdPerson}
           />
           
           <InputContainer
@@ -101,6 +103,7 @@ function Register({ authenticated, setAuthenticated }) {
             register={register}
             name="email"
             error={errors.email?.message}
+            Icon={MdEmail}
           />
           
           <InputContainer
@@ -111,6 +114,7 @@ function Register({ authenticated, setAuthenticated }) {
             name="password"
             type="password"
             error={errors.password?.message}
+            Icon={MdLock}
           />
           
           <InputContainer
@@ -121,6 +125,7 @@ function Register({ authenticated, setAuthenticated }) {
             name="confirmPassword"
             type="password"
             error={errors.confirmPassword?.message}
+            Icon={MdLock}
           />
           
           <InputContainer
@@ -130,6 +135,7 @@ function Register({ authenticated, setAuthenticated }) {
             register={register}
             name="bio"
             error={errors.bio?.message}
+            Icon={MdComment}
           />
           <InputContainer
           delay="600ms"
@@ -138,8 +144,9 @@ function Register({ authenticated, setAuthenticated }) {
             register={register}
             name="contact"
             error={errors.contact?.message}
+            Icon={MdPermContactCalendar}
           />
-          <InputContainer label="Selecionar módulo*" delay="700ms" error={errors.course_module?.message}>
+          <InputContainer Icon={MdViewModule} label="Selecionar módulo*" delay="700ms" error={errors.course_module?.message}>
             <select {...register("course_module")} defaultValue=''>
               <option value="" disabled={true}>Escolha um módulo</option>
               <option value="Primeiro módulo (Introdução ao Frontend)">

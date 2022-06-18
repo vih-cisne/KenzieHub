@@ -1,8 +1,18 @@
 
 
-function CardTech() {
+function CardTech({tech, setTech, Icon}) {
+    
     return (
-        <div>CardTech</div>
+        <li>
+             <h3>{tech.title}</h3>
+             <div>
+               <p>{tech.status}</p>
+               <Icon onClick={() => {
+              setTech(tech)
+            }}/>
+               
+             </div>
+        </li>
     )
 }
 

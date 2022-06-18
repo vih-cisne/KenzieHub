@@ -47,10 +47,11 @@ function FormModal({
               handleSubmit(onSubmitFunction.f)(e);
             }}
           >
-            {fieldsInputs.map(({ name, label, field, options, value }, i) => (
+            {fieldsInputs.map(({ name, label, field, options, value, defaultValue }, i) => (
               <InputContainer
                 value={value}
                 key={i}
+                defaultValue={defaultValue}
                 error={errors[name]?.message} register={name && register}
                 name={name && name}
 

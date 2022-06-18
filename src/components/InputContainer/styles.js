@@ -22,6 +22,15 @@ export const InputDirection = styled.div`
   transition: 0.4s;
   color: ${(props) => props.theme.grey0};
 
+  >div {
+    display:flex;
+    gap: 0.5rem;
+  }
+
+  .eye {
+    cursor:pointer;
+  }
+
   label {
     color: ${(props) => props.theme.grey0};
     font-size: 0.8rem;
@@ -35,7 +44,7 @@ export const InputDirection = styled.div`
     }
   }
 
-  div, select {
+  div {
     background-color: ${(props) => props.theme.grey2};
     display: flex;
     //font-size: 1rem;
@@ -73,8 +82,20 @@ export const InputDirection = styled.div`
   }
 
   select {
-    width: 100%
+    width: 100%;
+    appearance: none;
+    display: flex; 
   }
+
+  select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+  background-repeat: no-repeat;
+  background-position-x: 100%;
+  background-position-y: -3px;
+}
+
 
   input /*select::selection */ {
     color: ${(props) => props.theme.textwhite};

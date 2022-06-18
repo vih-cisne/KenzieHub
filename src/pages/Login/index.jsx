@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schema } from "./validation";
 import axios from "axios"
-//import { useState } from "react";
+import { MdEmail, MdLock } from "react-icons/md";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { Redirect } from "react-router-dom";
@@ -59,24 +59,7 @@ function Login({ authenticated, setAuthenticated }) {
       })
       
     })
-    /*avatar_url: null
-bio: "Estou apenas testando"
-contact: "email"
-course_module: "Terceiro módulo (Introdução ao Backend)"
-created_at: "2022-06-14T20:44:08.537Z"
-email: "anaCisne@email.com"
-id: "8be62db1-d323-4378-b36a-063beb5fb901"
-name: "Ana"
-updated_at: "2022-06-14T20:44:08.537Z"*/
-    /*bio: "fdvf"
-confirmPassword: "123456"
-contact: "dsgg"
-course_module: "Primeiro módulo (Introdução ao Frontend)"
-email: "emai@gmail.com"
-name: "fgd"
-password: "123456"*/
-/*{course_module: 'Primeiro módulo (Introdução ao Frontend)', name: 'Vitoria Cisne', email: 'emai@gmail.com', password: '123456', confirmPassword: '123456', …}*/
-
+   
   }
 
   if(authenticated) {
@@ -102,6 +85,7 @@ password: "123456"*/
             register={register}
             name="email"
             error={errors.email?.message}
+            Icon={MdEmail}
           />
           
           <InputContainer
@@ -112,6 +96,7 @@ password: "123456"*/
             name="password"
             type="password"
             error={errors.password?.message}
+            Icon={MdLock}
           />
 
 
